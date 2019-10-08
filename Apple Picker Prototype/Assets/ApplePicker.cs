@@ -43,4 +43,9 @@ public class ApplePicker : MonoBehaviour
             SceneManager.LoadScene("_Scene_0");
         }
     }
+
+    public static void StartGame()
+    {
+        SceneManager.LoadScene("_Scene_0");
+    }
 }
