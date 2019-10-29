@@ -5,28 +5,41 @@ using UnityEngine;
 public class FollowCam : MonoBehaviour
 {
     static public GameObject POI;
-    [Header("Set in Inspector")]
+
     public float easing = 0.05f;
-    public Vector2 minXY = Vector2.zero; 
-    [Header("Set Dynamically")]
-    public float    camZ;
+    public Vector2 minXY = Vector2.zero;
+
+    private float camZ;
 
     private void Awake()
     {
-        camZ = this.transform.position.z;
+        camZ = transform.position.z;
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 
     private void FixedUpdate()
     {
         Vector3 destination;
-        if (POI == null)
+
+        if (!POI)
         {
             destination = Vector3.zero;
         }
         else
         {
             destination = POI.transform.position;
-            if ( POI.tag == "Projectile")
+            if (POI.tag == "Projectile")
             {
                 if (POI.GetComponent<Rigidbody>().IsSleeping())
                 {
