@@ -21,17 +21,20 @@ public float speed = 30;
     private float _shieldLevel = 1;
     private GameObject lastTriggerGo = null;
 
+    public delegate void WeaponFireDelegate();
+    public WeaponFireDelegate fireDelegate;
+
     void Awake()
     {
         if (S == null)
         {
             S = this;
         }
-
-        else
-        {
-            Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
-        }
+        //fireDelegate += TempFire;
+        //else
+        //{
+       //     Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
+        //}
     }
 
     void Update()
@@ -46,9 +49,14 @@ public float speed = 30;
 
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
 
-        if (Input.GetKeyDown( KeyCode.Space ))
+       // if (Input.GetKeyDown( KeyCode.Space ))
+       // {
+        //    TempFire();
+       // }
+
+        if (Input.GetAxis("Jump") == 1 && fireDelegate != null)
         {
-            TempFire();
+            fireDelegate(); 
         }
     }
 
@@ -58,6 +66,11 @@ public float speed = 30;
         projGO.transform.position = transform.position;
         Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
         rigidB.velocity = Vector3.up * projectileSpeed;
+
+        Projectile proj = projGO.GetComponent<Projectile>();
+        proj.type = WeaponType.blaster;
+        float tSpeed = Main.GetWeaponDefinition(proj.type).velocity;
+        rigidB.velocity = Vector3.up * tSpeed;
     }
 
     private void OnTriggerEnter(Collider other)
